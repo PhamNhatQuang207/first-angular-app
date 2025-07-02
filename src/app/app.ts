@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [Home,RouterModule],
+  imports: [RouterModule],
   template: `
     <main>
       <header class="brand-name">
