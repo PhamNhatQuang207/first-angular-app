@@ -1,19 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HousingLocation } from './housinglocation';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class HousingService {
-  url = 'http://localhost:3000/locations';
-  constructor() { }
+  url = 'https://localhost:7038/api/HousingLocations'; // Update this to your backend URL
+  constructor(private http: HttpClient) { }
 
-  async getAllHousingLocations(): Promise<HousingLocation[]> {
-    const data = await fetch(this.url);
-    return await data.json() ?? [];
+  getAllHousingLocations(): Observable<HousingLocation[]> {
+    return this.http.get<HousingLocation[]>(this.url).pipe(
+      catchError(error => {
+        console.error('Error fetching all housing locations:', error);
+        return throwError(() => error);
+      })
+    );
   }
-  async getHousingLocationById(id: number): Promise<HousingLocation | undefined> {
-    const data = await fetch(`${this.url}/${id}`);
-    return await data.json() ?? {};
+  getHousingLocationById(id: number): Observable<HousingLocation | undefined> {
+    return this.http.get<HousingLocation>(`${this.url}/${id}`).pipe(
+      catchError(error => {
+        console.error('Error fetching housing location by id:', error);
+        return throwError(() => error);
+      })
+    );
   }
   submitApplication(firstName: string, lastName: string, email: string): void {
     console.log(`Application submitted by ${firstName} ${lastName} with email ${email}`);

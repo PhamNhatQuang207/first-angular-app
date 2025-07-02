@@ -1,13 +1,13 @@
-import { Component,inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HousingService } from '../housing.service';
 import { HousingLocation } from '../housinglocation';
-import { FormControl,FormGroup,ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   template: `
     <article>
       <img class="listing-photo" [src]="housingLocation?.photo" alt="Photo of {{ housingLocation?.name }}"/>
@@ -47,10 +47,10 @@ export class Details {
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     email: new FormControl('')
-  })
+  });
   constructor() {
     const housingLocationId = Number(this.route.snapshot.paramMap.get('id'));
-    this.housingService.getHousingLocationById(housingLocationId).then(location => {
+    this.housingService.getHousingLocationById(housingLocationId).subscribe(location => {
       this.housingLocation = location;
     });
   }
